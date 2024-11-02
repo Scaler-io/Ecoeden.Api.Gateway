@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  ecoeden.api.gateway:
+    container_name: Ecoeden.Api.Gateway
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_HTTP_PORTS=8080
+      - Logging__IncludeScopes=false
+      - "Logging__LogOutputTemplate=[{Timestamp:dd-MM-yyyy HH:mm:ss, fff}] {Level} {Properties} [CorrelationId:{CorrelationId}] [Machine: {MachineName}] {CallerType}:{MemberName} {Message}{NewLine}{Exception} {NewLine}"
+      - Logging__Console__Enabled=true
+      - Logging__Console__LogLevel=Debug
+      - Logging__Elastic__Enabled=true
+      - Logging__Elastic__LogLevel=Debug
+      - AppConfigurations__ApplicationIdentifier=Ecoeden.GatewayService
+      - AppConfigurations__ApplicationEnvironment=Docker
+      - Elasticsearch__Uri=http://elasticsearch:9200
+      - IdentityGroupAccess__Authority=http://Ecoeden.IdentityServer
+      - IdentityGroupAccess__Audience=http://Ecoeden.IdentityServer/resources
+    ports:
+      - "8000:8080"
+    networks:
+      - ecoeden_dev_net

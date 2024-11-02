@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  ecoeden.api.gateway:
+    image: ${DOCKER_REGISTRY-}ecoedenapigateway
+    build:
+      context: .
+      dockerfile: Ecoeden.Api.Gateway/Dockerfile
+
+networks:
+  ecoeden_dev_net:
+    external: true
+  

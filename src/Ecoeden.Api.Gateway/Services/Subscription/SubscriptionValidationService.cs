@@ -11,7 +11,6 @@ public class SubscriptionValidationService(ILogger logger) : ISubscriptionValida
     {
         { "F340FE8EA8604456AC4E66F31A87574C", [ "/catalogue" ] },
         { "79AE4A5B04CC48B887E38FAE7D1282C0", [ "/search" ] },
-        { "24026C99FDFA479780A48158A1710015", [ "/identity" ] },
         { "7B6AD94DCC3C4E9F891C52C8C340D99E", [ "/user" ] }
     };
 

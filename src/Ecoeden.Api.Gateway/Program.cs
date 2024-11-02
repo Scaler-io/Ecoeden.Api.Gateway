@@ -32,7 +32,6 @@ builder.Services.AddRateLimiter(options =>
     });
 });
 
-
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -47,19 +46,27 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("RequireScope", policy =>
-    {
-        policy.RequireClaim("scope");
-    });
-});
+// builder.Services.AddAuthorization(options =>
+// {
+//     options.AddPolicy("RequireScope", policy =>
+//     {
+//         policy.RequireClaim("scope");
+//     });
+// });
 
 builder.Services.AddTransient<ISubscriptionValidationService, SubscriptionValidationService>();
 builder.Services.AddTransient<SubscriptionValidationMiddlewar>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ecoedencors", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
+app.UseCors("ecoedencors");
 app.UseMiddleware<SubscriptionValidationMiddlewar>();
 app.UseRateLimiter();
 app.MapReverseProxy();
