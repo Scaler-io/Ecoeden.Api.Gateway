@@ -4,6 +4,8 @@ using Ecoeden.Api.Gateway.Middlewares;
 using Ecoeden.Api.Gateway.Services.Subscription;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,17 @@ var identityGroupAccess = builder.Configuration
 
 var logger = Logging.GetLogger(builder.Configuration, builder.Environment);
 
+builder.Services.AddOpenTelemetry()
+    .WithTracing(tracing =>
+    {
+        tracing.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("Ecoeden.ApiGateway"));
+        tracing.AddAspNetCoreInstrumentation();
+        tracing.AddHttpClientInstrumentation();
+        tracing.AddZipkinExporter(options =>
+        {
+            options.Endpoint = new Uri(builder.Configuration["Zipkin:Url"]);
+        });
+    });
 
 builder.Services.AddSingleton(x => logger);
 builder.Host.UseSerilog(logger);

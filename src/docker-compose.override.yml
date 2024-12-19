@@ -17,6 +17,7 @@ services:
       - Elasticsearch__Uri=http://elasticsearch:9200
       - IdentityGroupAccess__Authority=http://Ecoeden.IdentityServer
       - IdentityGroupAccess__Audience=http://Ecoeden.IdentityServer/resources
+      - Zipkin__Url=http://ecoeden.zipkin:9411/api/v2/spans 
     ports:
       - "8000:8080"
     networks:
